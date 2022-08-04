@@ -28,6 +28,6 @@ jobs:
           ref: ${{ inputs.repository_ref }}
           token: ${{ secrets.GITOPS_PAT }}
 
-      - name: list files
+      - name: Update tag for ${{ inputs.component }} in values-container.yaml
         run: |
-          ls -la
+          yq -i '.images.${{ inputs.component }} = "${{ github.sha }}"' values/dev/values-containers.yaml
