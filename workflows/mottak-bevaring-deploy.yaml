@@ -1,0 +1,26 @@
+on:
+  workflow_call:
+    inputs:
+      repository:
+        required: true
+        type: string
+      repository_ref:
+        required: false
+        default: master
+        type: string
+    secrets:
+      GITOPS_PAT:
+        description: Token for accessing the target repository.
+        required: true
+
+jobs:
+  update-deployment-version:
+    name: Update deployment version
+    runs-on: ubuntu-latest
+    concurrency: update-deployment-version
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.repository_ref }}
+          token: ${{ secrets.GITOPS_PAT }}
