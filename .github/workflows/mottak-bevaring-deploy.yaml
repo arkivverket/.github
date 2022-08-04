@@ -1,6 +1,9 @@
 on:
   workflow_call:
     inputs:
+      component:
+        required: true
+        type: string
       repository:
         required: true
         type: string
