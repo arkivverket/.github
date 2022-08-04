@@ -31,3 +31,7 @@ jobs:
       - name: Update tag for ${{ inputs.component }} in values-container.yaml
         run: |
           yq -i '.images.${{ inputs.component }} = "${{ github.sha }}"' values/dev/values-containers.yaml
+
+      - name: Running helm template
+        run: |
+          bash run_helm.zsh dev
