@@ -39,8 +39,6 @@ jobs:
         run: |
           bash run_helm.zsh dev
 
-      - run: git log
-
       - name: Commit changes
         run: |
           git config --local user.email "${{ secrets.GITOPS_EMAIL }}"
@@ -48,5 +46,3 @@ jobs:
           git add -A
           git commit -m "Set ${{ inputs.component }} image tag in dev to ${{ github.sha }}"
           git push
-
-      - run: git log
