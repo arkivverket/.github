@@ -1,0 +1,11 @@
+---
+extends: default
+
+rules:
+  document-start: false
+  line-length:
+    max: 127
+    allow-non-breakable-words: true
+  truthy:
+    allowed-values: ['true', 'false']
+    check-keys: false
