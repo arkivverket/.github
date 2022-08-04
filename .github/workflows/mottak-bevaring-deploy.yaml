@@ -13,7 +13,10 @@ on:
         type: string
     secrets:
       GITOPS_PAT:
-        description: Token for accessing the target repository.
+        required: true
+      GITOPS_EMAIL:
+        required: true
+      GITOPS_USER:
         required: true
 
 jobs:
@@ -35,3 +38,14 @@ jobs:
       - name: Running helm template
         run: |
           bash run_helm.zsh dev
+
+      - run: git log
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "${{ secrets.GITOPS_EMAIL }}"
+          git config --local user.name "${{ secrets.GITOPS_USER }}"
+          git add -A
+          git commit -m "Set ${{ inputs.component }} image tag in dev to ${{ github.sha }}"
+
+      - run: git log
