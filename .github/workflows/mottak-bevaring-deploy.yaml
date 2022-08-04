@@ -24,3 +24,7 @@ jobs:
           repository: ${{ inputs.repository }}
           ref: ${{ inputs.repository_ref }}
           token: ${{ secrets.GITOPS_PAT }}
+
+      - name: list files
+        run: |
+          ls -la
