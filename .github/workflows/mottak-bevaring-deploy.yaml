@@ -1,13 +1,19 @@
 on:
   workflow_call:
     inputs:
-      component:
+      component_name:
+        description: |
+          The name of the component to deploy. It is also used as the property name in the helm values file.
         required: true
         type: string
       repository:
+        description: |
+          The repository to deploy from, and want to push the changes to.
         required: true
         type: string
       repository_ref:
+        description: |
+          The branch to deploy from, and want to push the changes to.
         required: false
         default: master
         type: string
@@ -32,18 +38,18 @@ jobs:
           ref: ${{ inputs.repository_ref }}
           token: ${{ secrets.GITOPS_PAT }}
 
-      - name: Update tag for ${{ inputs.component }} in values-container.yaml
+      - name: Update tag for ${{ inputs.component_name }} in values-container.yaml
         run: |
-          yq -i '.images.${{ inputs.component }} = "${{ github.sha }}"' values/dev/values-containers.yaml
+          yq -i '.images.${{ inputs.component_name }} = "${{ github.sha }}"' values/dev/values-containers.yaml
 
       - name: Running helm template
         run: |
-          bash run_helm.zsh dev
+          bash run_helm.sh dev
 
       - name: Commit changes
         run: |
           git config --local user.email "${{ secrets.GITOPS_EMAIL }}"
           git config --local user.name "${{ secrets.GITOPS_USER }}"
           git add -A
-          git commit -m "Set ${{ inputs.component }} image tag in dev to ${{ github.sha }}"
+          git commit -m "Set ${{ inputs.component_name }} image tag in dev to ${{ github.sha }}"
           git push
