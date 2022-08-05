@@ -1,3 +1,5 @@
+name: Update deployment version
+
 on:
   workflow_call:
     inputs:
@@ -33,7 +35,6 @@ on:
 
 jobs:
   update-deployment-version:
-    name: Update deployment version
     runs-on: ubuntu-latest
     concurrency: update-deployment-version
     steps:
