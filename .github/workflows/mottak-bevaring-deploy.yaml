@@ -17,7 +17,8 @@ on:
       repository:
         description: |
           The repository to deploy from, and want to push the changes to.
-        required: true
+          If not set, the target repsitory will be CURRENT_REPO-k8s-config
+        required: false
         type: string
       repository_ref:
         description: |
@@ -40,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.0.2
         with:
-          repository: ${{ inputs.repository }}
+          repository: ${{ inputs.repository || format('{0}-k8s-config', github.repository) }}
           ref: ${{ inputs.repository_ref }}
           token: ${{ secrets.GITOPS_PAT }}
 
