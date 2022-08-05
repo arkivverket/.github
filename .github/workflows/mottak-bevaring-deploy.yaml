@@ -1,6 +1,12 @@
 on:
   workflow_call:
     inputs:
+      helm_values_file:
+        description: |
+          The relative path to the helm values file, where we store the object with the container image tags.
+        required: false
+        type: string
+        default: values.yaml
       component_name:
         description: |
           The name of the component to deploy. It is also used as the property name in the helm values file.
@@ -38,9 +44,9 @@ jobs:
           ref: ${{ inputs.repository_ref }}
           token: ${{ secrets.GITOPS_PAT }}
 
-      - name: Update tag for ${{ inputs.component_name }} in values-container.yaml
+      - name: Update tag for ${{ inputs.component_name }} in ${{ inputs.helm_values_file }}
         run: |
-          yq -i '.images.${{ inputs.component_name }} = "${{ github.sha }}"' values/dev/values-containers.yaml
+          yq -i '.images.${{ inputs.component_name }} = "${{ github.sha }}"' ${{ inputs.helm_values_file }}
 
       - name: Running helm template
         run: |
