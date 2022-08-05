@@ -33,7 +33,6 @@ on:
 
 jobs:
   update-deployment-version:
-    if: github.ref == 'refs/heads/develop'
     name: Update deployment version
     runs-on: ubuntu-latest
     concurrency: update-deployment-version
